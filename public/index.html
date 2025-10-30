@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提交新活动</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1a1a1a;
+            font-size: 14px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+            font-family: inherit;
+            background: #fafafa;
+        }
+
+        input[type="text"]:hover,
+        input[type="url"]:hover,
+        textarea:hover {
+            background: white;
+            border-color: #bbb;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        textarea:focus {
+            outline: none;
+            background: white;
+            border-color: #4285f4;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            padding: 4px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab:hover {
+            color: #333;
+        }
+
+        .tab.active {
+            background: #4285f4;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            flex: 1;
+        }
+
+        .checkbox-label .main-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .checkbox-label .sub-text {
+            font-size: 12px;
+            color: #28a745;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #3367d6;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .usage-section {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .usage-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .usage-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .usage-list li {
+            counter-increment: step-counter;
+            margin-bottom: 12px;
+            padding-left: 32px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .usage-list li::before {
+            content: counter(step-counter) ".";
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .feature-section {
+            margin-top: 24px;
+        }
+
+        .feature-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding-left: 20px;
+            margin-bottom: 8px;
+            position: relative;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: #4285f4;
+            font-weight: bold;
+        }
+
+        .result {
+            display: none;
+            margin-top: 24px;
+        }
+
+        .result .card {
+            border-left: 4px solid #28a745;
+        }
+
+        .result.error .card {
+            border-left-color: #dc3545;
+        }
+
+        .result.warning .card {
+            border-left-color: #ffc107;
+        }
+
+        .result-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .result-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .result-content p {
+            margin-bottom: 8px;
+        }
+
+        .result-content strong {
+            color: #333;
+        }
+
+        .yaml-output {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-top: 12px;
+            border: 1px solid #e0e0e0;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+
+        .pr-link {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .pr-link:hover {
+            background: #3367d6;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 3px solid #f0f0f0;
+            border-top: 3px solid #4285f4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 24px;
+            text-align: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .file-upload-area:hover {
+            border-color: #4285f4;
+            background: white;
+        }
+
+        .file-upload-area.active {
+            border-color: #4285f4;
+            background: #f0f7ff;
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: #999;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>提交新活动</h1>
+            <p>通过AI自动提取活动信息并创建Pull Request</p>
+        </div>
+
+        <div class="card">
+            <div class="section-title">活动信息来源</div>
+            <div class="section-desc">请选择URL或上传文件来提交包含活动信息的文件</div>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="url">
+                    <span>🔗</span> URL链接
+                </button>
+                <button class="tab" data-tab="upload">
+                    <span>📤</span> 文件上传
+                </button>
+            </div>
+
+            <form id="submitForm">
+                <div class="tab-content active" id="url-tab">
+                    <div class="form-group">
+                        <label for="url">活动URL</label>
+                        <input 
+                            type="url" 
+                            id="url" 
+                            name="url" 
+                            placeholder="https://example.com/event"
+                        >
+                        <div class="hint">输入活动的官方网址，AI将自动提取活动信息</div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="upload-tab">
+                    <div class="form-group">
+                        <label>文件上传</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="upload-icon">📄</div>
+                            <div class="upload-text">点击或拖拽文件到此处</div>
+                            <div class="upload-hint">支持 .md, .txt 等文本文件</div>
+                        </div>
+                        <input type="file" id="fileInput" style="display: none;" accept=".md,.txt,.markdown">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fileContent">或直接粘贴内容</label>
+                        <textarea 
+                            id="fileContent" 
+                            name="fileContent" 
+                            placeholder="粘贴包含活动信息的文本内容..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="submittedBy">提交者 (可选)</label>
+                    <input 
+                        type="text" 
+                        id="submittedBy" 
+                        name="submittedBy" 
+                        placeholder="您的GitHub用户名或邮箱"
+                    >
+                    <div class="hint">用于在Pull Request中标注提交者</div>
+                </div>
+
+                <div class="checkbox-wrapper">
+                    <input 
+                        type="checkbox" 
+                        id="createPR" 
+                        name="createPR" 
+                        checked
+                    >
+                    <div class="checkbox-label">
+                        <div class="main-text">自动创建GitHub Pull Request</div>
+                        <div class="sub-text">✓ 将自动创建PR（需要配置GitHub Token且网络代理）</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">提交并创建PR</button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">正在处理中，请稍候...</div>
+            </div>
+        </div>
+
+        <div class="result" id="result"></div>
+
+        <div class="usage-section">
+            <div class="usage-title">
+                <span>📋</span> 使用说明
+            </div>
+            <div class="section-desc">如何提交活动</div>
+            <ol class="usage-list">
+                <li>选择提交方式：URL链接或文件上传</li>
+                <li>填写活动的信息来源（网页链接或文件）</li>
+                <li>（可选）填写您的GitHub用户名或邮箱</li>
+                <li>点击"提交并创建PR"按钮</li>
+                <li>AI将自动提取活动信息并创建Pull Request</li>
+                <li>等待Maintainer审核您的提交</li>
+            </ol>
+
+            <div class="feature-section">
+                <div class="feature-title">
+                    <span>✅</span> 自动验证项
+                </div>
+                <ul class="feature-list">
+                    <li>活动信息完整性验证</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签切换
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // 文件上传处理
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileContent = document.getElementById('fileContent');
+
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('active');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('active');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('active');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    fileContent.value = e.target.result;
+                    fileUploadArea.querySelector('.upload-text').textContent = `已选择: ${file.name}`;
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // 表单提交
+        const form = document.getElementById('submitForm');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const submitBtn = form.querySelector('.submit-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // 获取当前激活的标签
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+            
+            // 构建请求数据
+            const formData = {
+                submittedBy: document.getElementById('submittedBy').value,
+                createPR: document.getElementById('createPR').checked
+            };
+
+            if (activeTab === 'url') {
+                formData.url = document.getElementById('url').value;
+                if (!formData.url) {
+                    showResult('error', '<div class="result-title">❌ 请输入URL</div><div class="result-content">请输入活动页面的URL地址</div>');
+                    return;
+                }
+            } else {
+                formData.fileContent = document.getElementById('fileContent').value;
+                formData.fileName = fileInput.files[0]?.name || 'content.txt';
+                
+                if (!formData.fileContent) {
+                    showResult('error', '<div class="result-title">❌ 请提供内容</div><div class="result-content">请上传文件或粘贴活动信息内容</div>');
+                    return;
+                }
+            }
+
+            // 显示加载状态
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = '处理中...';
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    let content = '<div class="result-content">';
+                    
+                    if (data.data) {
+                        content += `<p><strong>活动标题：</strong>${escapeHtml(data.data.title)}</p>`;
+                        content += `<p><strong>分类：</strong>${escapeHtml(data.data.category)}</p>`;
+                        content += `<p><strong>截止日期：</strong>${escapeHtml(data.data.deadline)}</p>`;
+                        if (data.data.tags && data.data.tags.length > 0) {
+                            content += `<p><strong>标签：</strong>${data.data.tags.map(t => escapeHtml(t)).join(', ')}</p>`;
+                        }
+                    }
+
+                    if (data.pr) {
+                        content += `<p style="margin-top: 12px;"><strong>Pull Request已创建：</strong></p>`;
+                        content += `<a href="${data.pr.url}" target="_blank" class="pr-link">🔗 查看 PR #${data.pr.number}</a>`;
+                    }
+
+                    if (data.yaml) {
+                        content += '<p style="margin-top: 16px;"><strong>生成的YAML配置：</strong></p>';
+                        content += `<div class="yaml-output">${escapeHtml(data.yaml)}</div>`;
+                    }
+
+                    if (data.warnings && data.warnings.length > 0) {
+                        content += '<p style="margin-top: 16px;"><strong>⚠️ 注意事项：</strong></p>';
+                        data.warnings.forEach(w => {
+                            content += `<p style="color: #856404;">• ${escapeHtml(w)}</p>`;
+                        });
+                    }
+
+                    content += '</div>';
+
+                    showResult('success', '<div class="result-title">✅ 提交成功</div>' + content);
+                    
+                    // 清空表单
+                    form.reset();
+                    fileUploadArea.querySelector('.upload-text').textContent = '点击或拖拽文件到此处';
+                } else {
+                    showResult('error', `<div class="result-title">❌ 提交失败</div><div class="result-content"><p>${escapeHtml(data.error || '未知错误')}</p></div>`);
+                }
+            } catch (error) {
+                showResult('error', `<div class="result-title">❌ 网络错误</div><div class="result-content"><p>无法连接到服务器，请检查网络连接</p><p style="font-size: 12px; color: #999;">${escapeHtml(error.message)}</p></div>`);
+            } finally {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '提交并创建PR';
+            }
+        });
+
+        function showResult(type, html) {
+            result.className = `result ${type}`;
+            result.innerHTML = '<div class="card">' + html + '</div>';
+            result.style.display = 'block';
+            result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

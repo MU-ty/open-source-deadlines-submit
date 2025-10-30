@@ -1,0 +1,33 @@
+{
+  "name": "activity-submission-bot",
+  "version": "1.0.0",
+  "description": "AI-powered activity submission bot for open-source deadlines",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node tests/test-api.js",
+    "test:github": "node tests/test-github.js"
+  },
+  "keywords": [
+    "ai",
+    "github",
+    "bot",
+    "automation",
+    "activity-submission"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^22.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "openai": "^4.73.1",
+    "undici": "^7.2.0",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}
