@@ -7,7 +7,9 @@ import OpenAI from 'openai';
 
 export class AIAgentService {
   constructor() {
-    this.provider = process.env.AI_PROVIDER || 'openai';
+    const configuredProvider = (process.env.AI_PROVIDER || '').toLowerCase();
+    this.provider = configuredProvider
+      || (process.env.DASHSCOPE_API_KEY ? 'dashscope' : 'openai');
     this.model = process.env.AI_MODEL || 'gpt-4o-mini';
     
     if (this.provider === 'dashscope') {
