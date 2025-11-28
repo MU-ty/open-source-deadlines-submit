@@ -3,6 +3,9 @@
   functions = "netlify/functions"
   publish = "public"
 
+[build.environment]
+NODE_VERSION = "20.18.1"
+
 [functions]
   node_bundler = "esbuild"
 
